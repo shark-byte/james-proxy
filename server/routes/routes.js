@@ -1,4 +1,5 @@
-const express = require('express');const router = express.Router();
+const express = require('express');
+const router = express.Router();
 
 const routes = {
   gallery: (req, res) => res.redirect(`http://13.57.148.57/api/restaurants/${req.params.id}/gallery`),
