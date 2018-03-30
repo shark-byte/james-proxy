@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node ./dist/server",
-    "docker-start": "node server/server.js",
+    "docker-start": "webpack && node src/server.js",
     "build": "webpack"
   },
   "dependencies": {
@@ -18,12 +18,14 @@
     "nodemon": "^1.17.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "request": "^2.83.0",
+    "request": "^2.85.0",
+    "request-promise-native": "^1.0.5",
     "styled-components": "^2.2.4"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",
     "babel-loader": "^7.1.2",
+    "babel-polyfill": "^6.0.16",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.11.1",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor",

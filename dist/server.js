@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -71,73 +71,147 @@ module.exports = require("react");
 
 /***/ }),
 /* 1 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("styled-components");
+__webpack_require__(2);
+module.exports = __webpack_require__(3);
+
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports) {
+
+module.exports = require("babel-polyfill");
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _express = __webpack_require__(3);
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-var _express2 = _interopRequireDefault(_express);
+var express = __webpack_require__(4);
+var React = __webpack_require__(0);
+// const { renderToString } = require('react-dom/server');
+var App = __webpack_require__(5);
+var Html = __webpack_require__(7);
+// const { ServerStyleSheet } = require('styled-components'); // <-- importing ServerStyleSheet
 
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _server = __webpack_require__(4);
-
-var _App = __webpack_require__(5);
-
-var _App2 = _interopRequireDefault(_App);
-
-var _Html = __webpack_require__(6);
-
-var _Html2 = _interopRequireDefault(_Html);
-
-var _styledComponents = __webpack_require__(1);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// <-- importing ServerStyleSheet
+var request = __webpack_require__(8);
 
 var port = 3000;
-var server = (0, _express2.default)();
+var server = express();
+
+// server.get('/', (req, res) => {
+//   const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
+
+//   const body = renderToString(sheet.collectStyles(<App />)); // <-- collecting styles
+//   const styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
+//   const title = 'Server side Rendering with Styled Components';
+
+//   res.send(
+//     Html({
+//       body,
+//       styles, // <-- passing the styles to our Html template
+//       title
+//     })
+//   );
+// });
 
 // Creating a single index route to server our React application from.
-server.get('/', function (req, res) {
-  var sheet = new _styledComponents.ServerStyleSheet(); // <-- creating out stylesheet
+server.get('/restaurants/:id', function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
+    var id, galleryHtml, nearbyHtml, sidebarHtml, overviewHtml, services;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            id = req.params.id;
+            galleryHtml = void 0;
+            nearbyHtml = void 0;
+            sidebarHtml = void 0;
+            overviewHtml = void 0;
+            services = {
+              'sidebar': 'http://localhost:3003/restaurants/' + id
+              // var components = {};
+              // const services = {
+              //   'gallery': `http://localhost:3001/restaurant/${id}`,
+              //   'nearby': `http://localhost:8000/restaurant/${id}`,
+              //   'sidebar': `http://localhost:3003/restaurant/${id}`,
+              //   'overview': '',
+              // }
 
-  var body = (0, _server.renderToString)(sheet.collectStyles(_react2.default.createElement(_App2.default, null))); // <-- collecting styles
-  var styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
-  var title = 'Server side Rendering with Styled Components';
+              // request(services['gallery'], (error, response, body) => {
+              //   if (error) {
+              //     throw error;
+              //   } else {
+              //     galleryHtml = body;
+              //   }
+              // });
 
-  res.send((0, _Html2.default)({
-    body: body,
-    styles: styles, // <-- passing the styles to our Html template
-    title: title
+              // request(services['nearby'], (error, response, body) => {
+              //   if (error) {
+              //     throw error;
+              //   } else {
+              //     nearbyHtml = body;
+              //   }
+              // });
+
+            };
+            _context.next = 8;
+            return request(services['sidebar'], function (error, response, body) {
+              if (error) {
+                throw error;
+              } else {
+                // sidebarHtml = body;;
+                // console.log(body);
+                sidebarHtml = body;
+              }
+            });
+
+          case 8:
+
+            // let components = {
+            //   gallery: galleryHtml,
+            //   nearby: nearbyHtml,
+            //   sidebar: sidebarHtml,
+            //   overview: overviewHtml
+            // }
+            // let components = {
+            //   sidebar: sidebarHtml
+            // }
+            // const sheet = new ServerStyleSheet(); // <-- creating out stylesheet
+            // console.log('components', components);
+            // const body = renderToString(sheet.collectStyles(<App components={components}/>)); // <-- collecting styles
+            // const styles = sheet.getStyleTags(); // <-- getting all the tags from the sheet
+            console.log('sidebarHtml', sidebarHtml);
+            res.send(Html({
+              sidebarHtml: sidebarHtml
+            }));
+
+          case 10:
+          case 'end':
+            return _context.stop();
+        }
+      }
+    }, _callee, undefined);
   }));
-});
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}());
 
 server.listen(port);
 console.log('Serving at http://localhost:' + port);
 
 /***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-module.exports = require("express");
-
-/***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-module.exports = require("react-dom/server");
+module.exports = require("express");
 
 /***/ }),
 /* 5 */
@@ -150,13 +224,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  font-size: 40px;\n  background: linear-gradient(20deg, rgb(219, 112, 147), #daa357);\n'], ['\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  font-size: 40px;\n  background: linear-gradient(20deg, rgb(219, 112, 147), #daa357);\n']);
+var _templateObject = _taggedTemplateLiteral(['\n  #midsection {\n    margin: 40px 0;\n    padding: 0 40px;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n  }\n  #overview-wrapper {\n    margin: 0 40px 0 0;\n  }\n'], ['\n  #midsection {\n    margin: 40px 0;\n    padding: 0 40px;\n    display: flex;\n    flex-direction: row;\n    justify-content: center;\n  }\n  #overview-wrapper {\n    margin: 0 40px 0 0;\n  }\n']);
 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _styledComponents = __webpack_require__(1);
+var _styledComponents = __webpack_require__(6);
 
 var _styledComponents2 = _interopRequireDefault(_styledComponents);
 
@@ -165,13 +239,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _taggedTemplateLiteral(strings, raw) { return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
 // Our single Styled Component definition
-var AppContaienr = _styledComponents2.default.div(_templateObject);
+var AppContainer = _styledComponents2.default.div(_templateObject);
 
-var App = function App() {
+var App = function App(props) {
   return _react2.default.createElement(
-    AppContaienr,
+    AppContainer,
     null,
-    '\uD83D\uDC85'
+    _react2.default.createElement(
+      'div',
+      null,
+      _react2.default.createElement(
+        'div',
+        { id: 'midsection' },
+        props.components.sidebar
+      )
+    )
   );
 };
 
@@ -179,6 +261,12 @@ exports.default = App;
 
 /***/ }),
 /* 6 */
+/***/ (function(module, exports) {
+
+module.exports = require("styled-components");
+
+/***/ }),
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -188,13 +276,17 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var Html = function Html(_ref) {
-  var body = _ref.body,
-      styles = _ref.styles,
-      title = _ref.title;
-  return "\n  <!DOCTYPE html>\n  <html>\n    <head>\n      <title>" + title + "</title>\n      " + styles + "\n    </head>\n    <body style=\"margin:0\">\n      <div id=\"app\">" + body + "</div>\n    </body>\n  </html>\n";
+  var sidebarHtml = _ref.sidebarHtml;
+  return "\n  <!DOCTYPE html>\n  <html>\n    <head>\n        <meta charset=\"utf-8\">\n        <link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\">\n        <link href=\"https://fonts.googleapis.com/css?family=Raleway:400,700|Roboto:400,700\" rel=\"stylesheet\">\n        <link rel=\"shortcut icon\" href=\"http://res.cloudinary.com/madlicorice/image/upload/v1520448614/WeGot-favicon.ico\">\n        <title>Shark Byte</title>\n        <style>\n          #midsection {\n            margin: 40px 0;\n            padding: 0 40px;\n            display: flex;\n            flex-direction: row;\n            justify-content: center;\n          }\n          #overview-wrapper {\n            margin: 0 40px 0 0;\n          }\n        </style>\n    </head>\n    <body>\n      " + sidebarHtml + "\n    </body>\n  </html>\n";
 };
 
 exports.default = Html;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = require("request-promise-native");
 
 /***/ })
 /******/ ]);

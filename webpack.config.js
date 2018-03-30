@@ -2,8 +2,11 @@ const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 
+require("babel-core/register");
+require("babel-polyfill");
+
 module.exports = {
-  entry: './src/server.js',
+  entry: ['babel-polyfill', './src/server.js'],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'server.js',

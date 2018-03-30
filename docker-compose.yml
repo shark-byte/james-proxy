@@ -1,0 +1,11 @@
+version: "3"
+services:
+  proxy: 
+    build: .
+    ports:
+      - '3000:3000'
+  database:
+    image: mongo:latest
+  sidebar:
+    image: james9446/sidebar:side_bar
+    
